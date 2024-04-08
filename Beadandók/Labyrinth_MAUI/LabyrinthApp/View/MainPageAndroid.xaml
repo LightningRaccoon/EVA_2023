@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Labyrinth.View.MainPageAndroid">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"  />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Easy"
+                    Command="{Binding NewEasyGameCommand}"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End" />
+
+            <Button Grid.Row="0"
+                    Grid.Column="1"
+                    Text="Medium"
+                    Command="{Binding NewMediumGameCommand}"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start" />
+
+            <Button Grid.Row="0"
+                    Grid.Column="2"
+                    Text="Hard"
+                    Command="{Binding NewHardGameCommand}"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start" />
+
+            <Button Grid.Row="0"
+                    Grid.Column="3"
+                    Text="Exit"
+                    Command="{Binding ExitCommand}"
+                    FontSize="Small"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End" 
+                    />
+
+        </Grid>
+
+        <Grid Grid.Row="1"
+            BindableLayout.ItemsSource="{Binding Fields}"
+            RowDefinitions="{Binding GameTableRows}"
+            ColumnDefinitions="{Binding GameTableColumns}"
+            ColumnSpacing="4"
+            RowSpacing="4">
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Up" Command="{Binding UpCommand}" />
+                <SwipeGestureRecognizer Direction="Left" Command="{Binding LeftCommand}" />
+                <SwipeGestureRecognizer Direction="Down" Command="{Binding DownCommand}" />
+                <SwipeGestureRecognizer Direction="Right" Command="{Binding RightCommand}" />
+            </Grid.GestureRecognizers>
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Button 
+                      Grid.Row="{Binding X}"
+                      Grid.Column="{Binding Y}"
+                      Text="{Binding Text}"
+                      Padding="0"
+                      FontAttributes="Bold"
+                      FontSize="Medium">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Text}" Value="W">
+                                <Setter Property="Background" Value="Black" />
+                                <Setter Property="TextColor" Value="Black" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding Text}" Value="P">
+                                <Setter Property="Background" Value="red" />
+                                <Setter Property="TextColor" Value="red" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding Text}" Value="E">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding Text}" Value="X">
+                                <Setter Property="Background" Value="Yellow" />
+                                <Setter Property="TextColor" Value="Yellow" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding Text}" Value="U">
+                                <Setter Property="Background" Value="LightBlue" />
+                                <Setter Property="TextColor" Value="LightBlue" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </Grid>
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Start" Padding="2,0,0,2">
+            <Label Text="Time: " 
+                 HorizontalOptions="Start"
+                 VerticalOptions="Center"/>
+            <Label Text="{Binding GameTime}" 
+                 HorizontalOptions="Start"
+                 VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="End" Padding="0,0,2,2">
+            <Button
+              Command="{Binding PauseCommand}"
+              Text="Pause"
+              MinimumWidthRequest="80"
+              MaximumHeightRequest="30"
+              Padding="10, 0, 10, 0"
+              FontSize="Small"
+              VerticalOptions="Center"
+              HorizontalOptions="End" >
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsPaused}" Value="True">
+                        <Setter Property="Background" Value="DarkRed" />
+                        <Setter Property="TextColor" Value="White" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsPaused}" Value="False">
+                        <Setter Property="Background" Value="WhiteSmoke" />
+                        <Setter Property="TextColor" Value="Black" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>
