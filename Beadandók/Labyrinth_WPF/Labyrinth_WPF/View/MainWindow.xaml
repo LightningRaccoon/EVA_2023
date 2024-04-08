@@ -1,0 +1,178 @@
+﻿<Window x:Class="Labyrinth_WPF.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Labyrinth_WPF"
+        mc:Ignorable="d"
+        Title="Labyrinth game" 
+        Icon="..\Assets\TorchIcon.ico"
+        MaxWidth="{Binding WindowWidth}" MaxHeight="{Binding WindowHeight}"
+        MinWidth="{Binding WindowWidth}" MinHeight="{Binding WindowHeight}"
+        Width="{Binding WindowWidth}" Height="{Binding WindowHeight}">
+    <Window.InputBindings>
+        <KeyBinding Key="W" Command="{Binding UpCommand}"></KeyBinding>
+        <KeyBinding Key="A" Command="{Binding LeftCommand}"></KeyBinding>
+        <KeyBinding Key="S" Command="{Binding DownCommand}"></KeyBinding>
+        <KeyBinding Key="D" Command="{Binding RightCommand}"></KeyBinding>
+    </Window.InputBindings>
+    <!-- External Resource -->
+    <Window.Resources>
+        <ControlTemplate x:Key="NoMouseOverButtonTemplate" TargetType="Button">
+            <Border Background="{TemplateBinding Background}"  
+                    BorderBrush="{TemplateBinding BorderBrush}"  
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled"  
+                         Value="False">
+                    <Setter Property="Background"  
+                            Value="{x:Static SystemColors.ControlLightBrush}" />
+                    <Setter Property="Foreground"  
+                            Value="{x:Static SystemColors.GrayTextBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <!-- External Resource -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" Height="20" Background="#6B4BB0" Foreground="Black">
+            <MenuItem Header="Game option">
+                <MenuItem Header="New Game" >
+                    <MenuItem Header="Easy" Command="{Binding NewEasyGameCommand}" />
+                    <MenuItem Header="Medium" Command="{Binding NewMediumGameCommand}" />
+                    <MenuItem Header="Hard" Command="{Binding NewHardGameCommand}" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Save Game" Command="{Binding SaveCommand}" />
+                <MenuItem Header="Load Game" Command="{Binding LoadCommand}" />
+                <Separator />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+            <ItemsControl.Background>
+                <ImageBrush ImageSource="..\Assets\background.jpg" />
+            </ItemsControl.Background>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="{Binding GameSize}" Rows="{Binding GameSize}" Margin="0"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Text}"
+                            Focusable="False" 
+                            FontSize="16" 
+                            Margin="0" 
+                            Width="30" Height="30"
+                            Template="{StaticResource NoMouseOverButtonTemplate}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text}" Value="W">
+                                        <Setter Property="Background" Value="Black" />
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" Foreground="Black"/>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="P">
+                                        <Setter Property="Background" Value="White" />
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <Image Source="../Assets/player.ico"
+                                                           HorizontalAlignment="Center" 
+                                                           VerticalAlignment="Center"
+                                                           Stretch="UniformToFill"/>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="E">
+                                        <Setter Property="Background" Value="White" />
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" Foreground="White"/>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="X">
+                                        <Setter Property="Background" Value="Yellow" />
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" Foreground="Yellow"/>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="U">
+                                        <Setter Property="Background" Value="LightBlue" />
+                                        <Setter Property="ContentTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}" Foreground="LightBlue"/>
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <StatusBar Grid.Row="2" Background="#3B5020" Foreground="White">
+            <StatusBarItem>
+                <TextBlock Text="Elapsed time: " />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding GameTime}" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem HorizontalAlignment="Right">
+                <Button Command="{Binding PauseCommand}" 
+                        Content="Pause" 
+                        Width="80" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Right" 
+                        BorderThickness="1" 
+                        BorderBrush="Black">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPaused}" Value="False">
+                                    <Setter Property="Background" Value="WhiteSmoke" />
+                                    <Setter Property="Foreground" Value="Black" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsPaused}" Value="True">
+                                    <Setter Property="Background" Value="DarkRed" />
+                                    <Setter Property="Foreground" Value="White" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

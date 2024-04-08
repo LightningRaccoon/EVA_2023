@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\background.jpg" />
+    <None Remove="Assets\player.ico" />
+    <None Remove="Assets\TorchIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\background.jpg" />
+    <Resource Include="Assets\player.ico" />
+    <Resource Include="Assets\TorchIcon.ico" />
+  </ItemGroup>
+
+</Project>
